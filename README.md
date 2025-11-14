@@ -98,6 +98,7 @@ HEADERS = {
 }
 
 **Parámetros base:**
+
 PARAMS_BASE = {
     "currency_code": "EUR",
     "min_rating": 0,
@@ -113,6 +114,7 @@ PARAMS_BASE = {
 }
 
 **Bucle de scraping (hasta 100 páginas)**
+
 NUM_PAGES = 100
 all_wines = []
 
@@ -154,6 +156,7 @@ for page in range(1, NUM_PAGES + 1):
     time.sleep(1)
 
 **Guardado y limpieza**
+
 df_vinos = pd.DataFrame(all_wines)
 df_vinos = df_vinos.drop_duplicates(subset=['vintage_id'])
 df_vinos.to_excel("vinos_vivino2.xlsx", index=False)
