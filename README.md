@@ -2,11 +2,18 @@
 Proyecto de análisis de datos sobre vino.
 
 ## Contenido
+## Contenido
 - [Descripción](#descripción)
 - [Tecnologías](#tecnologías)
+- [Visualización en Power BI (Dashboard)](#visualización-en-power-bi)  <
 - [Extracción de datos](#extracción-de-datos)
 - [Scraping](#scraping)
 - [Unión de datasets](#unión-de-datasets)
+- [Análisis de Machine Learning](#análisis-de-machine-learning)
+  - [Limpieza y Preprocesamiento](#limpieza-y-preprocesamiento)
+  - [Ingeniería de Variables (Feature Engineering)](#ingeniería-de-variables-feature-engineering)
+  - [Modelado y Evaluación](#modelado-y-evaluación)
+  - [Simulador Climático Élite](#simulador-climático-élite)
 - [Resultados](#resultados)
 - [Futuras mejoras](#futuras-mejoras)
 - [Autores](#autores)
@@ -38,7 +45,18 @@ Python-dotenv
 
 BeautifulSoup / Requests (scraping)
 
+Scikit-Learn (Modelos de ML)
+
+Seaborn / Matplotlib (Visualización de datos)
+
+XGBoost / RandomForest (Algoritmos predictivos)
+
 Jupyter Notebook
+
+## 📊 Visualización en Power BI
+
+Se ha desarrollado un Dashboard interactivo que conecta los datos históricos con el modelo de predicción. 
+- **Calculadora Predictiva:** Interfaz visual para simular el precio del kilo de uva según variables meteorológicas.
 
 🔹 Fuentes externas
 
@@ -188,6 +206,32 @@ El resultado incluye:
 
 ✔️ Datos climáticos asociados al mismo año (temperatura, humedad, precipitación)
 
+🤖 4. Análisis de Machine Learning
+
+Se ha desarrollado un pipeline completo de Ciencia de Datos para predecir el precio y la calidad del vino basándose en factores climáticos y enológicos.
+
+### 🔹 Preprocesamiento y Limpieza
+- **Tratamiento de Nulos:** Uso de `KNNImputer` y eliminación estratégica de registros sin precio real.
+- **Limpieza de Datos:** Normalización de precios (eliminación de símbolos de moneda y ajuste de decimales) y conversión de porcentajes de alcohol.
+
+### 🔹 Ingeniería de Variables (Feature Engineering)
+Para mejorar la precisión del modelo, se crearon variables sintéticas de alto impacto:
+- **Bodega_Score_Rating:** Un índice que captura el prestigio histórico de cada bodega basándose en sus precios y ratings.
+- **Variables Trimestrales:** Agrupación de datos climáticos (temperatura, precipitación, humedad) en trimestres (T1, T2, T3, T4) para identificar ciclos críticos de la vid.
+- **Análisis de Uvas:** Codificación mediante `MultiLabelBinarizer` para manejar mezclas de variedades y creación de un flag específico para *Tempranillo Puro*.
+- **Master_Score:** Un "ADN de precio" que agrupa la relación histórica entre Bodega-Año-Rating.
+
+### 🔹 Modelado Predictivo
+Se entrenaron y evaluaron diferentes arquitecturas:
+1. **Modelos de Regresión:** Para la predicción del precio exacto (€/kg) utilizando `RandomForestRegressor` y `KNeighborsRegressor`.
+2. **Modelos de Clasificación:** Para categorizar la calidad del vino.
+3. **Clustering (K-Means):** Utilizado para segmentar los vinos en "Perfiles Económicos" o "Perfiles de Gran Prestigio" según el impacto de la sequía y el clima.
+
+### 🏆 Modelo Maestro y Simulador
+El proyecto culmina con un **Modelo Maestro (Random Forest de 800 árboles)** optimizado mediante `GridSearchCV`, capaz de realizar predicciones con un rango de confianza específico.
+
+Se incluye una **Calculadora Climática Final** que permite simular escenarios (ej. heladas en mayo o variaciones de humedad en septiembre) para predecir el precio de mercado resultante.
+
 📊 4. Resultados del análisis
 
 El dataset combinado permite:
@@ -200,15 +244,15 @@ Identificar años climáticamente buenos y malos
 
 Preparar modelos predictivos basados en clima
 
+Modelo predictivo capaz de estimar precios con un intervalo de seguridad basado en variables climáticas críticas como las heladas de mayo y la humedad de febrero.
+
 🚀 Futuras mejoras
 
-Añadir automatización anual del módulo AEMET
-
-Integrar más regiones vinícolas
-
-Dashboard interactivo (Streamlit / PowerBI)
-
-Modelo de regresión clima → precio
+- **Automatización anual:** Conexión mediante scripts automáticos a la API de AEMET para que el dataset se actualice solo al finalizar cada año agrícola.
+- **Expansión geográfica:** Escalar el modelo a otras Denominaciones de Origen (Rioja, Priorat, Rueda) para identificar patrones climáticos comunes en toda España.
+- **Despliegue Web (Streamlit):** Crear una versión web ligera del modelo de Machine Learning para consulta rápida desde dispositivos móviles en el viñedo.
+- **Análisis de Series Temporales:** Implementar modelos de Deep Learning (LSTM) para predecir la evolución del mercado en la próxima década frente al cambio climático.
+- **Inclusión de Imágenes Satelitales:** Utilizar datos de la misión Copernicus para analizar el índice de vegetación (NDVI) y afinar aún más la precisión del modelo maestro.
 
 👥 Autores
 
